@@ -15,6 +15,7 @@ chrome.contextMenus.create({
     'https://gitlab.com/*',
     'https://*.gogs.io/*',
     'https://*.gitea.io/*',
+    'https://dev.azure.com/*'
   ],
 });
 
@@ -27,6 +28,7 @@ chrome.contextMenus.create({
     'https://gitlab.com/*',
     'https://*.gogs.io/*',
     'https://*.gitea.io/*',
+    'https://dev.azure.com/*'
   ],
 });
 

@@ -6,6 +6,7 @@ import { observe } from 'selector-observer';
 
 import { StorageKey } from './background';
 import '../css/icons.css';
+import '../css/pseudo-class.css';
 
 let colorsDisabled = false;
 let darkMode = false;
@@ -34,6 +35,12 @@ const getSelector = (hostname: string) => {
         iconSelector: 'tr.tree-item > td.tree-item-file-name > i',
         host: 'gitlab',
       };
+    case /.*azure.*/.test(hostname):
+      return {
+        filenameSelector: 'table.bolt-table tbody > a > td[aria-colindex=\"1\"] span.text-ellipsis',
+        iconSelector: 'table.bolt-table tbody > a > td[aria-colindex=\"1\"] span.icon-margin',
+        host: 'azure',
+      }
     default:
       return {
         filenameSelector: 'tr > td.name > a',
@@ -71,6 +78,7 @@ const { filenameSelector, iconSelector, host } = getSelector(
 );
 const isMobile = mobile();
 const isGitHub = host === 'github';
+const isAzure = host === 'azure';
 
 const replaceIcon = ({
   iconDom,
@@ -143,7 +151,31 @@ const init = async () => {
         });
       },
     });
-  } else {
+  } else if (isAzure) {
+    observe('table.bolt-table tbody > a', {
+      add(element) {
+        const filenameDom = select('td[aria-colindex=\"1\"] span.text-ellipsis', element);
+        const originalIconDon = select('td[aria-colindex=\"1\"] span.icon-margin', element);
+
+        if (!filenameDom || !originalIconDon) {
+          return;
+        }
+
+        const isFolder = originalIconDon.classList.contains('repos-folder-icon');
+        const className = fileIcons.getClass(filenameDom.innerText.trim());
+        
+        if (!isFolder && className) {
+          const newIconDom = document.createElement("span");
+          originalIconDon?.appendChild(newIconDom);
+          originalIconDon.classList.add("clear-pseudo-class");
+          replaceIcon({
+            iconDom: newIconDom,
+            filenameDom,
+          });
+        }
+      },
+    });
+  }else {
     update();
     document.addEventListener('pjax:end', update);
   }

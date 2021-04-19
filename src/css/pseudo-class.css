@@ -1,0 +1,7 @@
+.clear-pseudo-class::before {
+  display: none;
+}
+
+.clear-pseudo-class::after {
+  display: none;
+}

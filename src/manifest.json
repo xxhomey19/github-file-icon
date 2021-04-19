@@ -13,7 +13,8 @@
         "https://github.com/*",
         "https://gitlab.com/*",
         "https://*.gogs.io/*",
-        "https://*.gitea.io/*"
+        "https://*.gitea.io/*",
+        "https://dev.azure.com/*"
       ],
       "js": ["content.bundle.js"],
       "css": ["content.css"],
@@ -37,7 +38,8 @@
     "https://github.com/*",
     "https://gitlab.com/*",
     "https://*.gogs.io/*",
-    "https://*.gitea.io/*"
+    "https://*.gitea.io/*",
+    "https://dev.azure.com/*"
   ],
   "optional_permissions": ["http://*/*", "https://*/*"]
 }
